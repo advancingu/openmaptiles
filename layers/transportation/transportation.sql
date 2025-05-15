@@ -385,22 +385,33 @@ FROM (
          LEFT OUTER JOIN osm_transportation_name_network n ON hl.osm_id = n.osm_id
          WHERE zoom_level > 11 AND NOT is_area
            AND
-               CASE WHEN zoom_level = 12 THEN
-                         CASE WHEN transportation_filter_z12(hl.highway, hl.construction) THEN TRUE
-                              WHEN hl.highway IN ('track', 'path') THEN n.route_rank = 1
-                         END
-                    WHEN zoom_level = 13 THEN
-                         CASE WHEN man_made='pier' THEN NOT ST_IsClosed(hl.geometry)
-                              WHEN hl.highway IN ('track', 'path') THEN (hl.name <> ''
-                                                                   OR n.route_rank BETWEEN 1 AND 2
-                                                                   OR hl.sac_scale <> ''
-                                                                   )
-                              ELSE transportation_filter_z13(hl.highway, public_transport, hl.construction, service)
-                         END
-                    WHEN zoom_level >= 14 THEN
-                         CASE WHEN man_made='pier' THEN NOT ST_IsClosed(hl.geometry)
-                              ELSE TRUE
-                         END
+               CASE
+--                  TODO This is a big ugly hack until we have filter functions that match our purpose
+                    WHEN zoom_level >= 8 THEN TRUE
+--                          CASE WHEN transportation_filter_z12(hl.highway, hl.construction) THEN TRUE
+--                          END
+--                     WHEN zoom_level = 10 THEN
+--                          CASE WHEN transportation_filter_z12(hl.highway, hl.construction) THEN TRUE
+--                          END
+--                     WHEN zoom_level = 11 THEN
+--                          CASE WHEN transportation_filter_z12(hl.highway, hl.construction) THEN TRUE
+--                          END
+--                     WHEN zoom_level = 12 THEN
+--                          CASE WHEN transportation_filter_z12(hl.highway, hl.construction) THEN TRUE
+--                               WHEN hl.highway IN ('track', 'path') THEN n.route_rank = 1
+--                          END
+--                     WHEN zoom_level = 13 THEN
+--                          CASE WHEN man_made='pier' THEN NOT ST_IsClosed(hl.geometry)
+--                               WHEN hl.highway IN ('track', 'path') THEN (hl.name <> ''
+--                                                                    OR n.route_rank BETWEEN 1 AND 2
+--                                                                    OR hl.sac_scale <> ''
+--                                                                    )
+--                               ELSE transportation_filter_z13(hl.highway, public_transport, hl.construction, service)
+--                          END
+--                     WHEN zoom_level >= 14 THEN
+--                          CASE WHEN man_made='pier' THEN NOT ST_IsClosed(hl.geometry)
+--                               ELSE TRUE
+--                          END
                END
          UNION ALL
 
