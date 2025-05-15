@@ -197,6 +197,10 @@ surface_field: &surface
   key: surface
   name: surface
   type: string
+traffic_sign_field: &traffic_sign
+  key: traffic_sign
+  name: traffic_sign
+  type: string
 expressway_field: &expressway
   key: expressway
   name: expressway
@@ -250,6 +254,7 @@ tables:
     - *mtb_scale
     - *sac_scale
     - *surface
+    - *traffic_sign
     - *expressway
     mapping:
       highway:
